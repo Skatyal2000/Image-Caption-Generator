@@ -15,7 +15,7 @@ def load_captioning_model():
     model_path = "fnl_epoch_45.h5"
     tokenizer_path = "tokenizer.p"
 
-    model_url = "https://huggingface.co/skatyal1931/CaptionModel/blob/main/fnl_epoch_45.h5"
+    model_url = "https://huggingface.co/skatyal1931/CaptionModel/resolve/main/fnl_epoch_45.h5"
 
     if not os.path.exists(model_path):
         with st.spinner("Downloading model..."):
