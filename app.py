@@ -14,17 +14,11 @@ import uuid
 def load_captioning_model():
     model_path = "fnl_epoch_45.h5"
     tokenizer_path = "tokenizer.p"
-
     model_url = st.secrets["model_url"]
-    tokenizer_url = st.secrets["tokenizer_url"]
 
     if not os.path.exists(model_path):
         with st.spinner("Downloading model..."):
             urllib.request.urlretrieve(model_url, model_path)
-
-    if not os.path.exists(tokenizer_path):
-        with st.spinner("Downloading tokenizer..."):
-            urllib.request.urlretrieve(tokenizer_url, tokenizer_path)
 
     model = load_model(model_path)
     tokenizer = pickle_load(open(tokenizer_path, "rb"))
