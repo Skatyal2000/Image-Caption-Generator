@@ -4,3 +4,4 @@ Pillow
 gTTS
 numpy
 python-dotenv
+gdown
