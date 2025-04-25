@@ -12,11 +12,10 @@ from dotenv import load_dotenv
 
 @st.cache_resource
 def load_captioning_model():
-    st.write("model_url key found:", "model_url" in st.secrets)  # Optional debug
-
     model_path = "fnl_epoch_45.h5"
     tokenizer_path = "tokenizer.p"
-    model_url = st.secrets["model_url"]
+
+    model_url = "https://drive.google.com/uc?id=1CpiU2WqOG5esEFMlSoDuaA76iig-ROVQ"
 
     if not os.path.exists(model_path):
         with st.spinner("Downloading model..."):
