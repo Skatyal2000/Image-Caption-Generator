@@ -9,16 +9,39 @@ from gtts import gTTS
 import os
 import uuid
 
+
 @st.cache_resource
-def load_model_from_url():
+def load_captioning_model():
     model_path = "fnl_epoch_45.h5"
+    tokenizer_path = "tokenizer.p"
+
     model_url = st.secrets["model_url"]
+    tokenizer_url = st.secrets["tokenizer_url"]
 
     if not os.path.exists(model_path):
-        with st.spinner("Downloading model from Google Drive..."):
+        with st.spinner("Downloading model..."):
             urllib.request.urlretrieve(model_url, model_path)
 
-    return load_model(model_path)
+    if not os.path.exists(tokenizer_path):
+        with st.spinner("Downloading tokenizer..."):
+            urllib.request.urlretrieve(tokenizer_url, tokenizer_path)
+
+    model = load_model(model_path)
+    tokenizer = pickle_load(open(tokenizer_path, "rb"))
+    xception_model = Xception(include_top=False, pooling='avg')
+
+    return model, tokenizer, xception_model
+
+# @st.cache_resource
+# def load_model_from_url():
+#     model_path = "fnl_epoch_45.h5"
+#     model_url = st.secrets["model_url"]
+
+#     if not os.path.exists(model_path):
+#         with st.spinner("Downloading model from Google Drive..."):
+#             urllib.request.urlretrieve(model_url, model_path)
+
+#     return load_model(model_path)
 
 
 def extract_features(image, model):
