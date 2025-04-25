@@ -8,20 +8,22 @@ from pickle import load
 from gtts import gTTS
 import os
 import uuid
+from dotenv import load_dotenv
 
+load_dotenv()  # loads from .env
+
+model_url = os.getenv("MODEL_URL")
 
 @st.cache_resource
 def load_captioning_model():
     model_path = "fnl_epoch_45.h5"
-    tokenizer_path = "tokenizer.p"
-    model_url = st.secrets["model_url"]
 
     if not os.path.exists(model_path):
         with st.spinner("Downloading model..."):
-            urllib.request.urlretrieve(model_url, model_path)
+            urllib.request.urlretrieve(os.getenv("MODEL_URL"), model_path)
 
     model = load_model(model_path)
-    tokenizer = pickle_load(open(tokenizer_path, "rb"))
+    tokenizer = pickle_load(open("tokenizer.p", "rb"))
     xception_model = Xception(include_top=False, pooling='avg')
 
     return model, tokenizer, xception_model
