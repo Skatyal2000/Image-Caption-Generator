@@ -1,1 +1,6 @@
-tensorflow
+streamlit
+tensorflow==2.13.0
+numpy
+Pillow
+gTTS
+python-dotenv
