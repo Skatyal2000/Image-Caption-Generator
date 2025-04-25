@@ -9,20 +9,27 @@ from gtts import gTTS
 import os
 import uuid
 from dotenv import load_dotenv
+import gdown
+from pickle import load as pickle_load
 
 @st.cache_resource
 def load_captioning_model():
     model_path = "fnl_epoch_45.h5"
     tokenizer_path = "tokenizer.p"
 
+    # ✅ Direct download URL from Hugging Face (NOT blob link)
     model_url = "https://huggingface.co/skatyal1931/CaptionModel/resolve/main/fnl_epoch_45.h5"
 
+    # Download model if it doesn't exist
     if not os.path.exists(model_path):
         with st.spinner("Downloading model..."):
-            urllib.request.urlretrieve(model_url, model_path)
+            gdown.download(model_url, model_path, quiet=False)
 
+    # Load model and tokenizer
     model = load_model(model_path)
     tokenizer = pickle_load(open(tokenizer_path, "rb"))
+
+    # Load feature extractor
     xception_model = Xception(include_top=False, pooling='avg')
 
     return model, tokenizer, xception_model
