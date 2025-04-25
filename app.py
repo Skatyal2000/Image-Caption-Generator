@@ -86,16 +86,19 @@ st.title("Image Captioning with Audio Output")
 uploaded_file = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
 
 if uploaded_file:
-    st.write("model_url key found:", "model_url" in st.secrets)  # 👈 Debug line
-
     image = Image.open(uploaded_file)
     st.image(image, caption="Uploaded Image", use_container_width=True)
 
     with st.spinner("Generating caption..."):
-        model, tokenizer, xception_model = load_captioning_model()
+        try:
+            model, tokenizer, xception_model = load_captioning_model()
+            feature = extract_features(image, xception_model)
+            caption = generate_desc(model, tokenizer, feature)
+            st.subheader("Generated Caption")
+            st.write(caption)
+        except Exception as e:
+            st.error(f"Something went wrong while generating the caption: {e}")
 
-    st.subheader("Generated Caption")
-    st.write(caption)
 
     if st.button("🔊 Listen to Caption"):
         filename = f"temp_audio_{uuid.uuid4()}.mp3"
