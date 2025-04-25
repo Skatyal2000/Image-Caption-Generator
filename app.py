@@ -9,14 +9,17 @@ from gtts import gTTS
 import os
 import uuid
 
-# Load Model and Tokenizer
 @st.cache_resource
-def download_model():
+def load_model_from_url():
     model_path = "fnl_epoch_45.h5"
+    model_url = st.secrets["model_url"]
+
     if not os.path.exists(model_path):
-        with st.spinner("Downloading model..."):
-            urllib.request.urlretrieve(st.secrets["model_url"], model_path)
+        with st.spinner("Downloading model from Google Drive..."):
+            urllib.request.urlretrieve(model_url, model_path)
+
     return load_model(model_path)
+
 
 def extract_features(image, model):
     image = image.resize((299, 299)).convert('RGB')
