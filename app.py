@@ -78,13 +78,13 @@ st.title("Image Captioning with Audio Output")
 uploaded_file = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
 
 if uploaded_file:
+    st.write("model_url key found:", "model_url" in st.secrets)  # 👈 Debug line
+
     image = Image.open(uploaded_file)
-    st.image(image, caption="Uploaded Image", use_column_width=True)
+    st.image(image, caption="Uploaded Image", use_container_width=True)
 
     with st.spinner("Generating caption..."):
         model, tokenizer, xception_model = load_captioning_model()
-        feature = extract_features(image, xception_model)
-        caption = generate_desc(model, tokenizer, feature)
 
     st.subheader("Generated Caption")
     st.write(caption)
